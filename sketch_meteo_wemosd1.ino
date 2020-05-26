@@ -34,7 +34,7 @@
 #define STABILIZATION 124
 
 #ifndef STASSID
-#define STASSID "FALK"
+#define STASSID "ESP_SMARTHOME"
 #define STAPSK  "3199431994"
 #endif
 
@@ -45,7 +45,7 @@ ESP8266WebServer server(80);
 
 #define ONE_WIRE_BUS 0 //GPIO0 D3
 #define TEMPERATURE_PRECISION 12// resolution
-#define NUMBER_OF_SENSORS 2 
+#define NUMBER_OF_SENSORS 4 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature. 
@@ -120,17 +120,37 @@ void setup() {
   sensors_array[0].dev_addr[5] =  0x00;
   sensors_array[0].dev_addr[6] =  0x00;
   sensors_array[0].dev_addr[7] =  0x88;
-  sensors_array[0].caption="Outdoor temperature : ";
+  sensors_array[0].caption="Outdoor : ";
 
   sensors_array[1].dev_addr[0] =  0x28;
-  sensors_array[1].dev_addr[1] =  0x0C;
-  sensors_array[1].dev_addr[2] =  0xAB;
-  sensors_array[1].dev_addr[3] =  0x0C;
-  sensors_array[1].dev_addr[4] =  0x06;
+  sensors_array[1].dev_addr[1] =  0xFB;
+  sensors_array[1].dev_addr[2] =  0xBA;
+  sensors_array[1].dev_addr[3] =  0x79;
+  sensors_array[1].dev_addr[4] =  0xA2;
   sensors_array[1].dev_addr[5] =  0x00;
-  sensors_array[1].dev_addr[6] =  0x00;
-  sensors_array[1].dev_addr[7] =  0xE3;
-  sensors_array[1].caption="House temperature : ";
+  sensors_array[1].dev_addr[6] =  0x03;
+  sensors_array[1].dev_addr[7] =  0x06;
+  sensors_array[1].caption="Roof : ";
+
+  sensors_array[2].dev_addr[0] =  0x28;
+  sensors_array[2].dev_addr[1] =  0x0C;
+  sensors_array[2].dev_addr[2] =  0xAB;
+  sensors_array[2].dev_addr[3] =  0x0C;
+  sensors_array[2].dev_addr[4] =  0x06;
+  sensors_array[2].dev_addr[5] =  0x00;
+  sensors_array[2].dev_addr[6] =  0x00;
+  sensors_array[2].dev_addr[7] =  0xE3;
+  sensors_array[2].caption="Holl : ";
+
+  sensors_array[3].dev_addr[0] =  0x28;
+  sensors_array[3].dev_addr[1] =  0x36;
+  sensors_array[3].dev_addr[2] =  0xB7;
+  sensors_array[3].dev_addr[3] =  0xFB;
+  sensors_array[3].dev_addr[4] =  0x03;
+  sensors_array[3].dev_addr[5] =  0x00;
+  sensors_array[3].dev_addr[6] =  0x00;
+  sensors_array[3].dev_addr[7] =  0x5E;
+  sensors_array[3].caption="Bed room : ";
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -190,16 +210,16 @@ void handleRoot()
   message += " \n";
   message += " -------------------------";
   message += " \n";
-  message += "HUMIDITY % : ";
+  message += "HUMIDITY : (%) ";
   message += String(dht21sensor.humidity.value,0);
   message += " ";
   message += dht21sensor.humidity.vector;
-  message += " \n";message += "TEMPERATURE °C: ";
+  message += " \n";message += "OUTDOOR TEMPERATURE : (C) ";
   message += String(dht21sensor.temperature.value,1);
   message += " ";
   message += dht21sensor.temperature.vector;
   message += " \n";
-  message += "HEAT INDEX C :  ";
+  message += "OUTDOOR HEAT INDEX : (C) ";
   message += String(dht21sensor.heatindex.value,1);
   message += " ";
   message += dht21sensor.heatindex.vector;
